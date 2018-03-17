@@ -150,13 +150,13 @@ func TestIntegration_EthLog(t *testing.T) {
 }
 
 func TestIntegration_RunLog(t *testing.T) {
-	t.Parallel()
 	app, cleanup := cltest.NewApplication()
 	defer cleanup()
 
 	eth := app.MockEthClient()
 	logs := make(chan types.Log, 1)
 	eth.RegisterSubscription("logs", logs)
+	newHeads := eth.RegisterNewHeads()
 	app.Start()
 
 	gock.EnableNetworking()
@@ -172,8 +172,13 @@ func TestIntegration_RunLog(t *testing.T) {
 	app.Store.One("JobID", j.ID, &initr)
 	assert.Equal(t, models.InitiatorRunLog, initr.Type)
 
-	logs <- cltest.NewRunLog(j.ID, cltest.NewAddress(), `{"url":"https://etherprice.com/api"}`)
+	logBlockNumber := 1
+	logs <- cltest.NewRunLog(j.ID, cltest.NewAddress(), logBlockNumber,
+		`{"url":"https://etherprice.com/api"}`)
+	cltest.WaitForRuns(t, j, app.Store, 0)
 
+	safeNumber := logBlockNumber + int(app.Store.Config.EthMinLogConfirmations)
+	newHeads <- models.BlockHeader{Number: cltest.BigHexInt(safeNumber)}
 	cltest.WaitForRuns(t, j, app.Store, 1)
 }
 

@@ -141,3 +141,26 @@ func TestServices_NewRPCLogSubscription_PreventsDoubleDispatch(t *testing.T) {
 	eth.EventuallyAllCalled(t)
 	assert.Equal(t, 1, count)
 }
+
+func TestServices_RecordLog(t *testing.T) {
+	t.Parallel()
+
+	store, cleanup := cltest.NewStore()
+	defer cleanup()
+	//eth := cltest.MockEthOnStore(store)
+
+	job := cltest.NewJobWithLogInitiator()
+	//initr := job.Initiators[0]
+	log := cltest.LogFromFixture("../internal/fixtures/eth/subscription_logs.json")
+	block := cltest.IndexableBlockNumber(int64(log.BlockNumber))
+	data := models.JSON{}
+	assert.Nil(t, store.Save(block))
+	le := services.RPCLogEvent{
+		Job: job,
+		Log: log,
+	}
+
+	assert.Equal(t, 0, len(block.JobTriggers))
+	services.RecordLog(le, data)
+	assert.Equal(t, 1, len(block.JobTriggers))
+}

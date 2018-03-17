@@ -63,15 +63,16 @@ func NewConfigWithWSServer(wsserver *httptest.Server) *TestConfig {
 	rootdir := path.Join(RootDir, fmt.Sprintf("%d-%d", time.Now().UnixNano(), count))
 	config := TestConfig{
 		Config: store.Config{
-			LogLevel:            store.LogLevel{zapcore.DebugLevel},
-			RootDir:             rootdir,
-			BasicAuthUsername:   Username,
-			BasicAuthPassword:   Password,
-			ChainID:             3,
-			EthMinConfirmations: 6,
-			EthGasBumpWei:       *big.NewInt(5000000000),
-			EthGasBumpThreshold: 3,
-			EthGasPriceDefault:  *big.NewInt(20000000000),
+			LogLevel:               store.LogLevel{zapcore.DebugLevel},
+			RootDir:                rootdir,
+			BasicAuthUsername:      Username,
+			BasicAuthPassword:      Password,
+			ChainID:                3,
+			EthGasBumpWei:          *big.NewInt(5000000000),
+			EthGasBumpThreshold:    3,
+			EthGasPriceDefault:     *big.NewInt(20000000000),
+			EthMinConfirmations:    6,
+			EthMinLogConfirmations: 0,
 		},
 	}
 	config.SetEthereumServer(wsserver)

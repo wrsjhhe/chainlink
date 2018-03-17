@@ -131,9 +131,10 @@ func (h BlockHeader) IndexableBlockNumber() *IndexableBlockNumber {
 }
 
 type IndexableBlockNumber struct {
-	Number hexutil.Big `json:"number" storm:"id,unique"`
-	Digits int         `json:"digits" storm:"index"`
-	Hash   common.Hash `json:"hash"`
+	Number      hexutil.Big  `json:"number" storm:"id,unique"`
+	Digits      int          `json:"digits" storm:"index"`
+	Hash        common.Hash  `json:"hash"`
+	JobTriggers []JobTrigger `json:"jobTriggers"`
 }
 
 func NewIndexableBlockNumber(bigint *big.Int, hashes ...common.Hash) *IndexableBlockNumber {
@@ -200,4 +201,10 @@ func (l *IndexableBlockNumber) NextNumber() *IndexableBlockNumber {
 type EthSubscription interface {
 	Err() <-chan error
 	Unsubscribe()
+}
+
+type JobTrigger struct {
+	Data  JSON
+	JobID string
+	Fired bool
 }

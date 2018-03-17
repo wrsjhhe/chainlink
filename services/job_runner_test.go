@@ -22,8 +22,10 @@ func TestJobRunner_ExecuteRun(t *testing.T) {
 		wantStatus string
 		wantData   string
 	}{
-		{"success", `{}`, `{"data":{"value":"100"}}`, models.StatusCompleted, `{"value":"100"}`},
-		{"errored", `{}`, `{"error":"too much"}`, models.StatusErrored, `{}`},
+		{"success", `{}`, `{"data":{"value":"100"}}`, models.StatusCompleted,
+			`{"value":"100"}`},
+		{"errored", `{}`, `{"error":"too much"}`, models.StatusErrored,
+			`{}`},
 		{"errored with a value", `{}`, `{"error":"too much", "data":{"value":"99"}}`, models.StatusErrored,
 			`{"value":"99"}`},
 		{"overriding bridge type params", `{"url":"http://unsafe.com/hack"}`, `{"data":{"value":"100"}}`, models.StatusCompleted,
