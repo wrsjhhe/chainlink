@@ -16,11 +16,12 @@ contract ConcreteChainlinked is Chainlinked {
   function publicNewRun(
     bytes32 _jobId,
     address _address,
-    string _functionSignature
+    string _fulfillmentSignature
   )
     public
   {
-    chainlinkRequest(newRun(_jobId, _address, _functionSignature));
+    //chainlinkRequest(newRun(_jobId, _address, _fulfillmentSignature));
+    newRun(_jobId, _address, _fulfillmentSignature);
   }
 
 }
