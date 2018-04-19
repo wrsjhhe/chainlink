@@ -55,7 +55,7 @@ func TestClient_GetJobSpecs(t *testing.T) {
 	assert.Equal(t, j1.ID, jobs[0].ID)
 }
 
-func TestClient_ShowJobSpec(t *testing.T) {
+func TestClient_ShowJobSpec_Exists(t *testing.T) {
 	app, cleanup := cltest.NewApplication()
 	defer cleanup()
 	job := cltest.NewJob()
