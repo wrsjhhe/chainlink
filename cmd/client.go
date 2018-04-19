@@ -78,6 +78,10 @@ func logConfigVariables(config strpkg.Config) {
 	logger.Debug("Environment variables\n", config)
 }
 
+func (cli *Client) DisplayAccountInfo(c *clipkg.Context) error {
+	return nil
+}
+
 // ShowJobSpec returns the status of the given JobID.
 func (cli *Client) ShowJobSpec(c *clipkg.Context) error {
 	cfg := cli.Config
