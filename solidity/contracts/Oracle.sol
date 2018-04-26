@@ -39,10 +39,9 @@ contract Oracle is Ownable {
   function onTokenTransfer(address _sender, uint256 _wei, bytes _data)
     public onlyLINK
   {
-    if (_data.length > 0) {
-      currentAmount = _wei;
-      require(address(this).delegatecall(_data)); // calls requestData
-    }
+    require(_data.length > 0);
+    currentAmount = _wei;
+    require(address(this).delegatecall(_data)); // calls requestData
   }
 
   function requestData(
