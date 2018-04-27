@@ -1,0 +1,5 @@
+#!/bin/bash
+
+geth attach ws://localhost:18546 \
+  --datadir internal/gethnet/datadir \
+  --exec 'eth.sendTransaction({from:eth.accounts[0], to:eth.accounts[1], value: web3.toWei(1000, "ether")});'

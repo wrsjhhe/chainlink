@@ -2,6 +2,10 @@ vendor/
 tmp/
 internal/devnet/db.bolt
 internal/devnet/log.jsonl
-internal/gethnet
+internal/gethnet/log.jsonl
+internal/gethnet/db.bolt
+internal/gethnet/datadir/geth/
+internal/gethnet/datadir/geth.ipc
+internal/gethnet/datadir/history
 /chainlink
 .envrc
