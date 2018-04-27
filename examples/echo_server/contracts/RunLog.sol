@@ -11,7 +11,7 @@ contract RunLog is Chainlinked {
   }
 
   function request() public {
-    ChainlinkLib.Run memory run = newRun("9642f9755366460b922400b79bd202d8", this, "fulfill(bytes32,bytes32)");
+    ChainlinkLib.Run memory run = newRun("42c12304260449b89cdef5cde2f9260d", this, "fulfill(bytes32,bytes32)");
     run.add("msg", "hello_chainlink");
     externalId = chainlinkRequest(run, 1 szabo);
   }
