@@ -1,0 +1,27 @@
+{
+  "name": "chainlink-gui",
+  "version": "0.0.1",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build && next export",
+    "start": "next start",
+    "test": "NODE_ENV=test jest",
+    "watch": "NODE_ENV=test jest --watchAll --notify"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "babel-jest": "^22.4.3",
+    "isomorphic-unfetch": "^2.0.0",
+    "material-ui": "^1.0.0-beta.45",
+    "next": "^6.0.0",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.4.3"
+  }
+}

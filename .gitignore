@@ -8,3 +8,10 @@ internal/gethnet/datadir/history
 /chainlink
 .envrc
 node_modules/
+
+# GUI
+web/gui/yarn-error.log
+web/gui/.next
+web/gui/out
+web/gui/node_modules
+web/web-packr.go

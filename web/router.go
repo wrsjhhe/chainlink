@@ -7,7 +7,9 @@ import (
 	"io/ioutil"
 	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gobuffalo/packr"
 	"github.com/smartcontractkit/chainlink/logger"
 	"github.com/smartcontractkit/chainlink/services"
 )
@@ -17,17 +19,18 @@ func Router(app *services.ChainlinkApplication) *gin.Engine {
 	engine := gin.New()
 	config := app.Store.Config
 	basicAuth := gin.BasicAuth(gin.Accounts{config.BasicAuthUsername: config.BasicAuthPassword})
-	engine.Use(loggerFunc(), gin.Recovery(), basicAuth)
+	engine.Use(
+		loggerFunc(),
+		corsHandler(),
+		gin.Recovery(),
+		basicAuth,
+	)
 
 	v1 := engine.Group("/v1")
 	{
 		ac := AssignmentsController{app}
 		v1.POST("/assignments", ac.Create)
 		v1.GET("/assignments/:ID", ac.Show)
-
-		sc := SnapshotsController{app}
-		v1.POST("/assignments/:AID/snapshots", sc.CreateSnapshot)
-		v1.GET("/snapshots/:ID", sc.ShowSnapshot)
 	}
 
 	v2 := engine.Group("/v2")
@@ -48,6 +51,9 @@ func Router(app *services.ChainlinkApplication) *gin.Engine {
 		backup := BackupController{app}
 		v2.GET("/backup", backup.Show)
 	}
+
+	box := packr.NewBox("./gui/out/")
+	engine.StaticFS("/gui", box)
 
 	return engine
 }
@@ -80,6 +86,22 @@ func loggerFunc() gin.HandlerFunc {
 			"latency", fmt.Sprintf("%v", end.Sub(start)),
 		)
 	}
+}
+
+// TODO:
+// Only configure this in development. When the gui is served from the
+// binary it has the same origin.
+func corsHandler() gin.HandlerFunc {
+	c := cors.Config{
+		// next.js dev server
+		AllowOrigins:     []string{"http://localhost:3000"},
+		AllowMethods:     []string{"GET"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}
+	return cors.New(c)
 }
 
 func readBody(reader io.Reader) string {
